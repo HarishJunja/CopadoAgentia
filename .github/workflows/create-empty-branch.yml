@@ -1,0 +1,25 @@
+
+name: Create Empty Branch
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  create-empty-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create empty branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          git clone --bare "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" repo.git
+          cd repo.git
+          git config user.name "GitHub Actions"
+          git config user.email "actions@users.noreply.github.com"
+          git checkout --orphan empty-new
+          git commit --allow-empty -m "Create empty branch"
+          git push origin empty-new:refs/heads/empty
