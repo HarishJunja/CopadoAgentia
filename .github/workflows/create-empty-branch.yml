@@ -16,10 +16,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: |
-          git clone --bare "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" repo.git
-          cd repo.git
-          git config user.name "GitHub Actions"
-          git config user.email "actions@users.noreply.github.com"
+          git clone "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" repo
+          cd repo
           git checkout --orphan empty-new
+          git rm -rf . || true
           git commit --allow-empty -m "Create empty branch"
           git push origin empty-new:refs/heads/empty
